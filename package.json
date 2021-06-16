@@ -1,0 +1,39 @@
+{
+  "name": "elastic-search-POC",
+  "version": "0.0.1",
+  "description": "Elastic Search integration with graphQL POC",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir build && shx cp .env build 2>/dev/null",
+    "now-build": "babel src --out-dir build",
+    "start": "npm run build && node build/index.js"
+  },
+  "author": "Filipe Prates",
+  "license": "",
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.13.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "@babel/runtime-corejs3": "^7.9.2",
+    "babel-plugin-auto-import": "^1.0.5",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "cross-env": "^7.0.2",
+    "nodemon": "^2.0.0",
+    "shx": "^0.3.2"
+  },
+  "resolutions": {
+    "graphql": "^15.3.0"
+  }
+}
