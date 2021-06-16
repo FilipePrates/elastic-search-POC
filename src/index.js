@@ -1,6 +1,5 @@
 import express from "express";
 import dotenv from "dotenv";
-import { initializeDatabase } from "./initialize";
 
 // set environment variables from .env
 dotenv.config();
@@ -44,24 +43,24 @@ async function run() {
   //   },
   // });
 
-  await client.index({
-    index: "tasks",
-    body: {
-      id: "2f1f6838-30f9-47e6-963f-7701793db3ee",
-      name: "(EF06LP12) Utilizar, ao produzir diferentes gêneros, recursos de coesão referencial ",
-      type: "ASSIGNMENT",
-      startDate: {
-        startDate: "2021-02-16T18:32:45Z",
-      },
-      endDate: {
-        endDate: "2021-12-16T23:59:59Z",
-      },
-      isArchived: false,
-      createdAt: {
-        createdAt: "2021-02-16T18:35:56-03:00",
-      },
-    },
-  });
+  // await client.index({
+  //   index: "tasks",
+  //   body: {
+  //     id: "2f1f6838-30f9-47e6-963f-7701793db3ee",
+  //     name: "(EF06LP12) Utilizar, ao produzir diferentes gêneros, recursos de coesão referencial ",
+  //     type: "ASSIGNMENT",
+  //     startDate: {
+  //       startDate: "2021-02-16T18:32:45Z",
+  //     },
+  //     endDate: {
+  //       endDate: "2021-12-16T23:59:59Z",
+  //     },
+  //     isArchived: false,
+  //     createdAt: {
+  //       createdAt: "2021-02-16T18:35:56-03:00",
+  //     },
+  //   },
+  // });
 
   // await client.index({
   //   index: "tasks",
@@ -104,30 +103,30 @@ async function run() {
   // here we are forcing an index refresh, otherwise we will not
   // get any result in the consequent search
   // await client.indices.refresh({ index: "game-of-thrones" });
+  await client.indices.refresh({ index: "tasks" });
 
-  // var body = {
+  // var properties = {
   //   properties: {
-  //     _all: { type: "keyword", index: true },
+  //     _all: { type: "text", index: true },
   //   },
   // };
-  // client.indices.putMapping({ index: "tasks", body: body });
-
-  await client.indices.refresh({ index: "tasks" });
+  // client.indices.putMapping({ index: "tasks", body: properties });
 
   // const mappings = await client.indices.getMapping({ index: "tasks" });
   // console.log(mappings.body.tasks.mappings);
 
   // Let's search!
-  const { search } = await client.search({
+  const { body } = await client.search({
     index: "tasks",
     body: {
-      // query: { match: { _all: { query: "João", fuzziness: "AUTO" } } },
-      query: { match: { name: { query: "produzir", fuzziness: "AUTO" } } },
-      // query: { query_string: { query: "Desafio" } },
+      query: {
+        query_string: { query: "desafo~" },
+      },
     },
   });
-
-  console.log(search);
+  console.log(body.hits.hits);
 }
 
 run().catch(console.log);
+
+// export default client

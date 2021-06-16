@@ -6,8 +6,6 @@ var _express = _interopRequireDefault(require("express"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _initialize = require("./initialize");
-
 // set environment variables from .env
 _dotenv.default.config();
 
@@ -50,24 +48,25 @@ async function run() {
   //     quote: "A mind needs books like a sword needs a whetstone.",
   //   },
   // });
-  await client.index({
-    index: "tasks",
-    body: {
-      id: "2f1f6838-30f9-47e6-963f-7701793db3ee",
-      name: "(EF06LP12) Utilizar, ao produzir diferentes gêneros, recursos de coesão referencial ",
-      type: "ASSIGNMENT",
-      startDate: {
-        startDate: "2021-02-16T18:32:45Z"
-      },
-      endDate: {
-        endDate: "2021-12-16T23:59:59Z"
-      },
-      isArchived: false,
-      createdAt: {
-        createdAt: "2021-02-16T18:35:56-03:00"
-      }
-    }
-  }); // await client.index({
+  // await client.index({
+  //   index: "tasks",
+  //   body: {
+  //     id: "2f1f6838-30f9-47e6-963f-7701793db3ee",
+  //     name: "(EF06LP12) Utilizar, ao produzir diferentes gêneros, recursos de coesão referencial ",
+  //     type: "ASSIGNMENT",
+  //     startDate: {
+  //       startDate: "2021-02-16T18:32:45Z",
+  //     },
+  //     endDate: {
+  //       endDate: "2021-12-16T23:59:59Z",
+  //     },
+  //     isArchived: false,
+  //     createdAt: {
+  //       createdAt: "2021-02-16T18:35:56-03:00",
+  //     },
+  //   },
+  // });
+  // await client.index({
   //   index: "tasks",
   //   body: {
   //     id: "dd0b957e-e77a-484f-a460-9e1167277996",
@@ -106,37 +105,31 @@ async function run() {
   // here we are forcing an index refresh, otherwise we will not
   // get any result in the consequent search
   // await client.indices.refresh({ index: "game-of-thrones" });
-  // var body = {
-  //   properties: {
-  //     _all: { type: "keyword", index: true },
-  //   },
-  // };
-  // client.indices.putMapping({ index: "tasks", body: body });
-
   await client.indices.refresh({
     index: "tasks"
-  }); // const mappings = await client.indices.getMapping({ index: "tasks" });
+  }); // var properties = {
+  //   properties: {
+  //     _all: { type: "text", index: true },
+  //   },
+  // };
+  // client.indices.putMapping({ index: "tasks", body: properties });
+  // const mappings = await client.indices.getMapping({ index: "tasks" });
   // console.log(mappings.body.tasks.mappings);
   // Let's search!
 
   const {
-    search
+    body
   } = await client.search({
     index: "tasks",
     body: {
-      // query: { match: { _all: { query: "João", fuzziness: "AUTO" } } },
       query: {
-        match: {
-          name: {
-            query: "produzir",
-            fuzziness: "AUTO"
-          }
+        query_string: {
+          query: "desafo~"
         }
-      } // query: { query_string: { query: "Desafio" } },
-
+      }
     }
   });
-  console.log(search);
+  console.log(body.hits.hits);
 }
 
-run().catch(console.log);
+run().catch(console.log); // export default client
